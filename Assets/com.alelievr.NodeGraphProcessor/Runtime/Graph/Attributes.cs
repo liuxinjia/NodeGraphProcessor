@@ -196,9 +196,17 @@ namespace GraphProcessor
 			this.showInNode = showInNode;
 		}
 	}
-	
-	[AttributeUsage(AttributeTargets.Field, AllowMultiple = false)]
-	public class ShowAsDrawer : Attribute
+
+	[AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
+	public class ConvertFuncAttribute : Attribute
 	{
+		// public Func<>;
+		public string catalog;
+
+		public ConvertFuncAttribute(string converterName)
+		{
+			this.catalog = converterName;
+
+		}
 	}
 }
