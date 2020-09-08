@@ -6,8 +6,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [1.0.0]
 
+### Added
+- Added the [ShowAsDrawer] Attribute to display a drawer beside an input port
+
 ### Fixed
 - Fixed relay node packing workflow and some deletion issues
+- Fixed ArgumentOutOfRange in relay node
+- Fixed relay node creation from input port
 
 ## [0.8.0]
 
