@@ -13,7 +13,7 @@ namespace Cr7Sund.ConvertGraph
     {
         protected override bool hasSettings => true;
         private SourceNode dataNode;
-        private Action valueChangeCallback;
+        private Action valueChangeCallback = () => { };
 
         public override void Enable()
         {

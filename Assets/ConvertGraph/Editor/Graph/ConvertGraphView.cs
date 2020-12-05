@@ -365,14 +365,14 @@ namespace Cr7Sund.ConvertGraph
                 var mousePos = (evt.currentTarget as VisualElement).ChangeCoordinatesTo(contentViewContainer, evt.localMousePosition);
                 Vector2 nodePosition = mousePos;
                 string souceNodeName = GraphNodeType.MNode.ToString(); // Reverse direction
-                string actionName = $"Create/{(nodeMenuItem.Value == typeof(ConvertNode) ? nodeMenuItem.Key.Split('$')[0].Split('.').LastOrDefault() : nodeMenuItem.Value == typeof(SourceNode) ? ($"{nodeMenuItem.Key}{souceNodeName}") : nodeMenuItem.Key)}";
+                string actionName = $"Create/{(nodeMenuItem.type == typeof(ConvertNode) ? nodeMenuItem.path.Split('$')[0].Split('.').LastOrDefault() : nodeMenuItem.type == typeof(SourceNode) ? ($"{nodeMenuItem.path}{souceNodeName}") : nodeMenuItem.path)}";
 
                 evt.menu.AppendAction(actionName,
                     (e) =>
                     {
-                        if (nodeMenuItem.Value.IsAssignableFrom(typeof(ConvertNode))) CreateConverterNodeOfClass(nodeMenuItem.Key, nodePosition);
-                        else if (nodeMenuItem.Value.IsAssignableFrom(typeof(SourceNode))) AddSourceNode(typeof(int), !isM2V, nodePosition, GraphNodeType.MNode.ToString(), true);
-                        else CreateNodeOfType(nodeMenuItem.Value, nodePosition);
+                        if (nodeMenuItem.type.IsAssignableFrom(typeof(ConvertNode))) CreateConverterNodeOfClass(nodeMenuItem.path, nodePosition);
+                        else if (nodeMenuItem.type.IsAssignableFrom(typeof(SourceNode))) AddSourceNode(typeof(int), !isM2V, nodePosition, GraphNodeType.MNode.ToString(), true);
+                        else CreateNodeOfType(nodeMenuItem.type, nodePosition);
                     }, DropdownMenuAction.AlwaysEnabled
                 );
             }

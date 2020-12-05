@@ -99,12 +99,12 @@ namespace GraphProcessor
             }
         }
 
-        protected virtual SearchTreeEntry AddStandardSearchEntry(KeyValuePair<string, Type> nodeMenuItem, string nodeName, int level)
+        protected virtual SearchTreeEntry AddStandardSearchEntry((string path, Type type) nodeMenuItem, string nodeName, int level)
         {
             return new SearchTreeEntry(new GUIContent(nodeName, icon))
             {
                 level = level + 1,
-                userData = nodeMenuItem.Value
+                userData = nodeMenuItem.type
             };
         }
 
@@ -134,7 +134,8 @@ namespace GraphProcessor
             // Sort menu by alphabetical order and submenus
 			foreach (var nodeMenuItem in sortedMenuItems)
 			{
-                var nodePath = nodePaths.FirstOrDefault(kp => kp.type == nodeMenuItem.port.nodeType).path;
+                // var nodePath = nodePaths.FirstOrDefault(kp => kp.type == nodeMenuItem.port.nodeType).path;
+                var nodePath = GetEdgeNodePath(nodePaths, nodeMenuItem.port);
 
                 // Ignore the node if it's not in the create menu
                 if (String.IsNullOrEmpty(nodePath))
@@ -168,12 +169,12 @@ namespace GraphProcessor
                     }
                 }
 
-                tree.Add(AddEdgeNodeSearchEntry(nodeMenuItem, nodeName, level));
+                tree.Add(AddEdgeNodeSearchEntry(nodeMenuItem.port, nodeName, level));
             }
         }
 
-        protected virtual string GetEdgeNodePath(Dictionary<string, Type> nodePaths, NodeProvider.PortDescription nodeMenuItem)=>
-             nodePaths.FirstOrDefault(kp => kp.Value == nodeMenuItem.nodeType).Key;
+        protected virtual string GetEdgeNodePath(IEnumerable<(string path, Type type)> nodePaths, NodeProvider.PortDescription nodePortDes) =>
+             nodePaths.FirstOrDefault(kp => kp.type == nodePortDes.nodeType).path;
 
         protected virtual SearchTreeEntry AddEdgeNodeSearchEntry(NodeProvider.PortDescription nodeMenuItem, string nodeName, int level)
         {

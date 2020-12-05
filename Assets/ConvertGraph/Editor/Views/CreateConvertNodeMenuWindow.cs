@@ -12,23 +12,23 @@ namespace Cr7Sund.ConvertGraph
 
     public class CreateConvertNodeMenuWindow : CreateNodeMenuWindow
     {
-        protected override string GetEdgeNodePath(Dictionary<string, Type> nodePaths, NodeProvider.PortDescription nodeMenuItem) =>
-         nodePaths.FirstOrDefault(k => k.Key == nodeMenuItem.extraInfo).Key;
+        protected override string GetEdgeNodePath(IEnumerable<(string path, Type type)> nodePaths, NodeProvider.PortDescription nodePortDes) =>
+         nodePaths.FirstOrDefault(k => k.path == nodePortDes.extraInfo).path;
 
-        protected override SearchTreeEntry AddStandardSearchEntry(KeyValuePair<string, Type> nodeMenuItem, string nodeName, int level)
+        protected override SearchTreeEntry AddStandardSearchEntry((string path, Type type) nodeMenuItem, string nodeName, int level)
         {
-            if (nodeMenuItem.Value == typeof(ConvertNode))
+            if (nodeMenuItem.type == typeof(ConvertNode))
             {
-                string[] vs = nodeMenuItem.Key.Split('$');
+                string[] vs = nodeMenuItem.path.Split('$');
                 var typeName = vs[0].Split('/').LastOrDefault().Split('.').LastOrDefault();
 
                 var treeEntry = base.AddStandardSearchEntry(nodeMenuItem, nodeName, level);
-                treeEntry.userData = nodeMenuItem.Key;
+                treeEntry.userData = nodeMenuItem.path;
                 treeEntry.content.text = typeName;
 
                 return treeEntry;
             }
-            else if (nodeMenuItem.Value.IsAssignableFrom(typeof(SourceNode)))
+            else if (nodeMenuItem.type.IsAssignableFrom(typeof(SourceNode)))
             {
                 var treeEntry = base.AddStandardSearchEntry(nodeMenuItem, nodeName, level);
                 if (graphView is ConvertGraphView cView)

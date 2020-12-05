@@ -216,11 +216,11 @@ namespace GraphProcessor
 
 		public static bool AppendNodePerMenu(string keyValue, Type valueType)
 		{
-			if (nodePerMenuTitle.ContainsKey(keyValue))
+			if (genericNodes.nodePerMenuTitle.ContainsKey(keyValue))
 			{
 				return false;
 			}
-			nodePerMenuTitle[keyValue] = valueType;
+			genericNodes.nodePerMenuTitle[keyValue] = valueType;
 			return true;
 		}
 
@@ -237,7 +237,7 @@ namespace GraphProcessor
 					type = assembly.GetType(strs[0]);
                 }
 
-                nodeCreatePortDescription.Add(new PortDescription
+               genericNodes.nodeCreatePortDescription.Add(new PortDescription
                 {
                     nodeType = nodeType,
 					portType = type,
