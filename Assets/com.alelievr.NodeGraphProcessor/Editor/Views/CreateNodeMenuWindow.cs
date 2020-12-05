@@ -51,7 +51,6 @@ namespace GraphProcessor
                 new SearchTreeGroupEntry(new GUIContent("Create Node"), 0),
             };
 
-            // Sort menu by alphabetical order and submenus
             if (edgeFilter == null)
                 CreateStandardNodeMenu(tree);
             else
@@ -62,12 +61,13 @@ namespace GraphProcessor
 
         void CreateStandardNodeMenu(List<SearchTreeEntry> tree)
         {
-            var nodeEntries = graphView.FilterCreateNodeMenuEntries().OrderBy(k => k.Key);
+            // Sort menu by alphabetical order and submenus
+            var nodeEntries = graphView.FilterCreateNodeMenuEntries().OrderBy(k => k.path);
             var titlePaths = new HashSet< string >();
-            
+
 			foreach (var nodeMenuItem in nodeEntries)
 			{
-                var nodePath = nodeMenuItem.Key;
+                var nodePath = nodeMenuItem.path;
                 var nodeName = nodePath;
                 var level    = 0;
                 var parts    = nodePath.Split('/');
@@ -77,13 +77,13 @@ namespace GraphProcessor
                     level++;
                     nodeName = parts[parts.Length - 1];
                     var fullTitleAsPath = "";
-                    
+
                     for(var i = 0; i < parts.Length - 1; i++)
                     {
                         var title = parts[i];
                         fullTitleAsPath += title;
                         level = i + 1;
-                        
+
                         // Add section title if the node is in subcategory
                         if (!titlePaths.Contains(fullTitleAsPath))
                         {
@@ -98,7 +98,7 @@ namespace GraphProcessor
                 tree.Add(AddStandardSearchEntry(nodeMenuItem, nodeName, level));
             }
         }
-       
+
         protected virtual SearchTreeEntry AddStandardSearchEntry(KeyValuePair<string, Type> nodeMenuItem, string nodeName, int level)
         {
             return new SearchTreeEntry(new GUIContent(nodeName, icon))
@@ -110,11 +110,11 @@ namespace GraphProcessor
 
         protected virtual void CreateEdgeNodeMenu(List<SearchTreeEntry> tree)
         {
-            var entries = NodeProvider.GetEdgeCreationNodeMenuEntry((edgeFilter.input ?? edgeFilter.output) as PortView);
+            var entries = NodeProvider.GetEdgeCreationNodeMenuEntry((edgeFilter.input ?? edgeFilter.output) as PortView, graphView.graph);
 
             var titlePaths = new HashSet< string >();
 
-            var nodePaths = NodeProvider.GetNodeMenuEntries();
+            var nodePaths = NodeProvider.GetNodeMenuEntries(graphView.graph);
 
             tree.Add(new SearchTreeEntry(new GUIContent($"Relay", icon))
             {
@@ -129,9 +129,12 @@ namespace GraphProcessor
                 }
             });
 
-			foreach (var nodeMenuItem in entries.OrderBy(n => n.nodeType.ToString()))
-            {
-                var nodePath = GetEdgeNodePath(nodePaths, nodeMenuItem);
+            var sortedMenuItems = entries.Select(port => (port, nodePaths.FirstOrDefault(kp => kp.type == port.nodeType).path)).OrderBy(e => e.path);
+
+            // Sort menu by alphabetical order and submenus
+			foreach (var nodeMenuItem in sortedMenuItems)
+			{
+                var nodePath = nodePaths.FirstOrDefault(kp => kp.type == nodeMenuItem.port.nodeType).path;
 
                 // Ignore the node if it's not in the create menu
                 if (String.IsNullOrEmpty(nodePath))
@@ -171,7 +174,7 @@ namespace GraphProcessor
 
         protected virtual string GetEdgeNodePath(Dictionary<string, Type> nodePaths, NodeProvider.PortDescription nodeMenuItem)=>
              nodePaths.FirstOrDefault(kp => kp.Value == nodeMenuItem.nodeType).Key;
-        
+
         protected virtual SearchTreeEntry AddEdgeNodeSearchEntry(NodeProvider.PortDescription nodeMenuItem, string nodeName, int level)
         {
             return new SearchTreeEntry(new GUIContent($"{nodeName}:  {nodeMenuItem.portDisplayName}", icon))

@@ -192,7 +192,11 @@ namespace GraphProcessor
 			InitializePorts();
 		}
 
-		internal void InitializePorts()
+		/// <summary>
+		/// Use this function to initialize anything related to ports generation in your node
+		/// This will allow the node creation menu to correctly recognize ports that can be connected between nodes
+		/// </summary>
+		public virtual void InitializePorts()
 		{
 			foreach (var nodeFieldKP in nodeFields.ToList().OrderByDescending(kp => kp.Value.info.MetadataToken))
 			{
@@ -230,6 +234,20 @@ namespace GraphProcessor
 
 			return changed;
 		}
+
+		/// <summary>
+		/// Update all ports of the node without updating the connected ports. Only use this method when you need to update all the nodes ports in your graph.
+		/// </summary>
+		public bool UpdateAllPortsLocal()
+		{
+			bool changed = false;
+
+			foreach (var field in nodeFields)
+				changed |= UpdatePortsForFieldLocal(field.Value.fieldName);
+
+			return changed;
+		}
+
 
 		/// <summary>
 		/// Update the ports related to one C# property field (only for this node)
@@ -454,6 +472,8 @@ namespace GraphProcessor
 			onAfterEdgeConnected?.Invoke(edge);
 		}
 
+		protected virtual bool CanResetPort(NodePort port) => true;
+
 		public void OnEdgeDisconnected(SerializableEdge edge)
 		{
 			if (edge == null)
@@ -466,7 +486,7 @@ namespace GraphProcessor
 
 			// Reset default values of input port:
 			bool haveConnectedEdges = edge.inputNode.inputPorts.Where(p => p.fieldName == edge.inputFieldName).Any(p => p.GetEdges().Count != 0);
-			if (edge.inputNode == this && !haveConnectedEdges)
+			if (edge.inputNode == this && !haveConnectedEdges && CanResetPort(edge.inputPort))
 				edge.inputPort?.ResetToDefault();
 
 			UpdateAllPorts();
