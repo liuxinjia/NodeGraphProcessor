@@ -36,6 +36,8 @@ namespace GraphProcessor
 		public Group			removedGroups;
 		public BaseStackNode	addedStackNode;
 		public BaseStackNode	removedStackNode;
+		public StickyNote		addedStickyNotes;
+		public StickyNote		removedStickyNotes;
 	}
 
 	/// <summary>
@@ -129,6 +131,9 @@ namespace GraphProcessor
 		/// <returns></returns>
 		[SerializeField]
 		public List< ExposedParameter >					exposedParameters = new List< ExposedParameter >();
+
+		[SerializeField]
+		public List< StickyNote >						stickyNotes = new List<StickyNote>();
 
 		[System.NonSerialized]
 		Dictionary< BaseNode, int >						computeOrderDictionary = new Dictionary< BaseNode, int >();
@@ -343,6 +348,26 @@ namespace GraphProcessor
 		}
 
 		/// <summary>
+		/// Add a sticky note 
+		/// </summary>
+		/// <param name="note"></param>
+        public void AddStickyNote(StickyNote note)
+        {
+            stickyNotes.Add(note);
+			onGraphChanges?.Invoke(new GraphChanges{ addedStickyNotes = note });
+        }
+
+		/// <summary>
+		/// Removes a sticky note 
+		/// </summary>
+		/// <param name="note"></param>
+        public void RemoveStickyNote(StickyNote note)
+        {
+            stickyNotes.Remove(note);
+			onGraphChanges?.Invoke(new GraphChanges{ removedStickyNotes = note });
+        }
+
+		/// <summary>
 		/// Invoke the onGraphChanges event, can be used as trigger to execute the graph when the content of a node is changed 
 		/// </summary>
 		/// <param name="node"></param>
@@ -394,6 +419,13 @@ namespace GraphProcessor
 		// so we can load objects references
 		public void Deserialize()
 		{
+			// Disable nodes correctly before removing them:
+			if (nodes != null)
+			{
+				foreach (var node in nodes)
+					node.DisableInternal();
+			}
+
 			nodes.Clear();
 
 			foreach (var serializedNode in serializedNodes.ToList())
