@@ -12,7 +12,7 @@ public class ColorNodeView : BaseNodeView
 {
 	public override void Enable()
 	{
-		AddControlField(nameof(ColorNode.color));
+		AddControlField(nameof(ColorNode.input));
 		style.width = 200;
 	}
 }

@@ -88,7 +88,7 @@ namespace GraphProcessor
             if (accept && element is BaseNodeView nodeView)
             {
                 var index = Mathf.Clamp(proposedIndex, 0, stackNode.nodeGUIDs.Count - 1);
-
+                index = Mathf.Clamp(index, 0, index);
                 int oldIndex = stackNode.nodeGUIDs.FindIndex(g => g == nodeView.nodeTarget.GUID);
                 if (oldIndex != -1)
                 {

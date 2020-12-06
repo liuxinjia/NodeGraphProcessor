@@ -60,6 +60,8 @@ MonoBehaviour:
   - type: DrawerFieldTestNode, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
     jsonDatas: '{"GUID":"ac9a5d83-a834-41cb-89cf-eb5239cc0868","computeOrder":20,"position":{"serializedVersion":"2","x":1210.0,"y":995.4347534179688,"width":146.0,"height":341.0},"expanded":false,"debug":false,"nodeLock":false,"vector4":{"x":0.0,"y":0.0,"z":0.0,"w":0.0},"vector3":{"x":0.0,"y":0.0,"z":0.0},"vector2":{"x":0.0,"y":0.0},"floatInput":0.0,"intInput":0,"intInput2":0,"stringInput":"","color":{"r":0.0,"g":0.0,"b":0.0,"a":0.0},"gameObject":{"instanceID":0},"animationCurve":{"serializedVersion":"2","m_Curve":[],"m_PreInfinity":2,"m_PostInfinity":2,"m_RotationOrder":4},"rigidbody":{"instanceID":0},"layerMask":{"serializedVersion":"2","m_Bits":0}}'
+  - type: SubNode, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    jsonDatas: '{"GUID":"f1064b57-e4fa-46f6-9c44-3db807eb3791","computeOrder":21,"position":{"serializedVersion":"2","x":1468.4637451171875,"y":376.6666564941406,"width":99.333251953125,"height":100.66665649414063},"expanded":false,"debug":false,"nodeLock":false,"inputA":0.0,"inputB":0.0,"output":0.0}'
   edges:
   - GUID: 04cee6c7-b233-40e1-b41a-31f6093f1482
     owner: {fileID: 11400000}
@@ -192,6 +194,17 @@ MonoBehaviour:
     - ab7c80f0-51fd-401a-9d67-0b6543025f87
     - 42bd42f7-7c33-4d6c-8cff-24e051b0e644
     - e277d5c6-386e-4f6b-bd63-af2353f3e4d8
+  - title: rer
+    color: {r: 0.9811321, g: 0, b: 0, a: 0.3}
+    position:
+      serializedVersion: 2
+      x: 1443.0435
+      y: 317.39127
+      width: 149.33339
+      height: 185.33336
+    size: {x: 400, y: 200}
+    innerNodeGUIDs:
+    - f1064b57-e4fa-46f6-9c44-3db807eb3791
   stackNodes:
   - id: 0
   pinnedElements:
@@ -264,7 +277,7 @@ MonoBehaviour:
       height: 101
     title: New Sticky Note
     content: Write your text here
-  position: {x: -416, y: -575, z: 0}
+  position: {x: -596, y: 69.333336, z: 0}
   scale: {x: 1.15, y: 1.15, z: 1}
   references:
     version: 1
