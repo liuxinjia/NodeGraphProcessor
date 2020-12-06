@@ -7,8 +7,18 @@ using System.Linq;
 [System.Serializable, NodeMenuItem("Primitives/Text")]
 public class TextNode : BaseNode
 {
-	[Output(name = "Label"), SerializeField]
-	public string				output;
+    [Output(name = "Get"), SerializeField]
+    public string get;
+    [Input(name = "Set"), SerializeField]
+    public int set;
 
-	public override string		name => "Text";
+    public BindDirection bindDirection;
+    public string bindName;
+    public override string name => "Text";
+}
+public enum BindDirection
+{
+    v2m,
+    m2v,
+    mvvm
 }
