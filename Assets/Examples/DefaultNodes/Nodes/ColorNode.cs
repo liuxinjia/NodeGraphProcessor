@@ -13,8 +13,9 @@ public class ColorNode : BaseNode
     [Input("Input")]
     public string input;
 
-    [Output(name ="Output")]
+    [Output(name = "Output")]
     public string output;
 
+    public Transform go;
     public override string name => "Color";
 }

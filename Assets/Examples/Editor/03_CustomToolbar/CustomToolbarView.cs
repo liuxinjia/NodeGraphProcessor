@@ -22,5 +22,7 @@ public class CustomToolbarView : ToolbarView
 
         AddButton("Test", () => ((AllGraphView)graphView).TestConnect());
         AddButton("Add Stack ", () => ((AllGraphView)graphView).TestAddStack());
+
+        AddButton("Get All Graph", () => ((AllGraphView)graphView).TestAll());
     }
 }
